@@ -1,6 +1,7 @@
 # KootletLand Website
 
 The KootletLand hub: live server info, news, accounts, and support — no actual کتلت delivery (yet).
+
 The official website for the KootletLand Minecraft server. It brings together live server status, news, rules, the store, player accounts, and support.
 
 Built with Next.js (App Router) and a MySQL database shared by the website and the Minecraft server.
