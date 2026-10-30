@@ -1,3 +1,5 @@
+[فارسی](README.md) · [English](README.en.md)
+
 # کتلت‌لند — وب‌سایت
 
 سایت رسمی سرور ماینکرفت کتلت‌لند: وضعیت زنده‌ی سرور، اخبار، قوانین، فروشگاه، اکانت بازیکن و پشتیبانی.
@@ -69,4 +71,3 @@ GET /api/health/db
 - آدرس سایت از متغیر `NEXT_PUBLIC_SITE_URL` خوانده می‌شود (`lib/site.ts`). اگر خالی باشد، آدرس `*.vercel.app` استفاده می‌شود.
 - canonical، `sitemap.xml`، `robots.txt`، داده‌ی ساخت‌یافته (JSON-LD)، `llms.txt` و `llms-full.txt` همه از همین مقدار ساخته می‌شوند.
 - برای افزودن صفحه‌ی عمومی جدید از `pageMetadata()` در `lib/seo.ts` استفاده کن و `<PageHeader path="/مسیر" />` را بده تا breadcrumb هم بیاید؛ مسیر را به `app/sitemap.ts` هم اضافه کن.
-
