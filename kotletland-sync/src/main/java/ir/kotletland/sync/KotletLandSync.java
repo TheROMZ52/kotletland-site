@@ -1,4 +1,4 @@
-package ir.kootletland.sync;
+package ir.kotletland.sync;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -33,7 +33,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.concurrent.CompletableFuture;
 
-public final class KootletLandSync extends JavaPlugin implements Listener {
+public final class KotletLandSync extends JavaPlugin implements Listener {
     private LuckPerms luckPerms;
     private Database database;
     private HttpClient httpClient;
@@ -73,7 +73,7 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
         long notificationInterval = Math.max(5, getConfig().getLong("notifications.poll-seconds", 15));
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::pollNotifications, 60L, notificationInterval * 20L);
 
-        getLogger().info("KootletLandSync enabled.");
+        getLogger().info("KotletLandSync enabled.");
     }
 
     @Override
@@ -85,10 +85,10 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("kootletlandsync")) {
+        if (command.getName().equalsIgnoreCase("kotletlandsync")) {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-                if (!sender.hasPermission("kootletlandsync.reload")) {
-                    sender.sendMessage("§cYou do not have permission to reload KootletLandSync.");
+                if (!sender.hasPermission("kotletlandsync.reload")) {
+                    sender.sendMessage("§cYou do not have permission to reload KotletLandSync.");
                     return true;
                 }
 
@@ -96,11 +96,11 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
                 loadServerConfig();
                 database.initialize();
                 registerServer();
-                sender.sendMessage("§aKootletLandSync configuration reloaded.");
+                sender.sendMessage("§aKotletLandSync configuration reloaded.");
                 return true;
             }
 
-            sender.sendMessage("§eUsage: /kootletlandsync reload");
+            sender.sendMessage("§eUsage: /kotletlandsync reload");
             return true;
         }
 
@@ -194,7 +194,7 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
             request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/minecraft/unlink/server"))
                 .header("Content-Type", "application/json")
-                .header("x-kootletland-server-token", serverToken)
+                .header("x-kotletland-server-token", serverToken)
                 .timeout(java.time.Duration.ofSeconds(10))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
@@ -245,7 +245,7 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
             request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/minecraft/link/verify"))
                 .header("Content-Type", "application/json")
-                .header("x-kootletland-server-token", serverToken)
+                .header("x-kotletland-server-token", serverToken)
                 .timeout(java.time.Duration.ofSeconds(10))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
@@ -310,7 +310,7 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
             }
             data.save(file);
         } catch (Exception e) {
-            throw new RuntimeException("Could not save KootletLandSync identity.", e);
+            throw new RuntimeException("Could not save KotletLandSync identity.", e);
         }
     }
 
@@ -351,7 +351,7 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
         httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
             .thenAccept(response -> {
                 if (response.statusCode() == 200) {
-                    getLogger().info("Minecraft server registered with KootletLand automatically.");
+                    getLogger().info("Minecraft server registered with KotletLand automatically.");
                 } else {
                     getLogger().warning("Automatic server registration returned HTTP " + response.statusCode() + ".");
                 }
@@ -410,10 +410,10 @@ public final class KootletLandSync extends JavaPlugin implements Listener {
     record Notification(long id, String title, String message) {}
 
     final class Database {
-        private final KootletLandSync plugin;
+        private final KotletLandSync plugin;
         private volatile CompletableFuture<Void> ready = CompletableFuture.completedFuture(null);
 
-        Database(KootletLandSync plugin) {
+        Database(KotletLandSync plugin) {
             this.plugin = plugin;
         }
 

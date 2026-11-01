@@ -37,7 +37,7 @@ export default function SupportPage() {
           </li>
           <li>
             <h2>روبیکا</h2>
-            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. آی‌دی: <span className="ltr">@kootletland</span></p>
+            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. آی‌دی: <span className="ltr">@kotletland</span></p>
             <a className="btn btn-ghost" href={rubikaUrl} target="_blank" rel="noopener noreferrer">ورود به روبیکا</a>
           </li>
           <li>

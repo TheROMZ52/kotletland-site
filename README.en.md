@@ -1,8 +1,8 @@
-# KootletLand Website
+# KotletLand Website
 
-The KootletLand hub: live server info, news, accounts, and support — no actual کتلت delivery (yet).
+The KotletLand hub: live server info, news, accounts, and support — no actual کتلت delivery (yet).
 
-The official website for the KootletLand Minecraft server. It brings together live server status, news, rules, the store, player accounts, and support.
+The official website for the KotletLand Minecraft server. It brings together live server status, news, rules, the store, player accounts, and support.
 
 Built with Next.js (App Router) and a MySQL database shared by the website and the Minecraft server.
 
@@ -45,7 +45,7 @@ Main website tables:
 
 Punishment history is read directly from LiteBans tables (`litebans_bans`, `litebans_mutes`, `litebans_warnings`, and `litebans_kicks`). It is not copied into a separate website table.
 
-The website and the `kootletland-sync` plugin must use the same shared MySQL database.
+The website and the `kotletland-sync` plugin must use the same shared MySQL database.
 
 ## Minecraft account linking
 

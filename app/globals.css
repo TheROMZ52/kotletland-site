@@ -915,7 +915,7 @@ html {
 }
 
 /* ==========================================================================
-   KootletLand visual direction v2
+   KotletLand visual direction v2
    Editorial Minecraft server landing: chunky geometry, quieter chrome,
    oversized type, and a single luminous sandwich signature.
    ========================================================================== */
@@ -1335,7 +1335,7 @@ body {
 
 
 /* ==========================================================================
-   KootletLand visual direction v3
+   KotletLand visual direction v3
    Neon editorial / Minecraft command-center landing
    ========================================================================== */
 
@@ -1431,7 +1431,7 @@ body {
 }
 
 .hero-copy::before {
-  content: 'KOOTLETLAND // ONLINE';
+  content: 'KOTLETLAND // ONLINE';
   display: inline-flex;
   align-items: center;
   min-height: 30px;

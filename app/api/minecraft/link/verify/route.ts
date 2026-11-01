@@ -8,7 +8,7 @@ const NAME_RE = /^[A-Za-z0-9_]{3,16}$/
 const CODE_RE = /^\d{8}$/
 
 export async function POST(request: Request) {
-  const token = request.headers.get('x-kootletland-server-token')?.trim()
+  const token = request.headers.get('x-kotletland-server-token')?.trim()
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const tokenHash = createHash('sha256').update(token).digest('hex')

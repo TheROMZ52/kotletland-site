@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { randomUUID, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
 import { db } from '@/lib/db'
 
-const SESSION_COOKIE = 'kootletland_session'
+const SESSION_COOKIE = 'kotletland_session'
 const SESSION_DAYS = 30
 
 export type CurrentUser = {

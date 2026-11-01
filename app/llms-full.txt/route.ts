@@ -10,7 +10,7 @@ export function GET() {
 
 ## هویت
 نام سایت: کتلت‌لند
-نام انگلیسی: KootletLand
+نام انگلیسی: KotletLand
 نوع: وب‌سایت رسمی یک سرور Minecraft فارسی
 پلتفرم اصلی: Minecraft Java Edition
 وب‌سایت: ${base}/

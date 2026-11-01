@@ -1,10 +1,10 @@
-name: Build KootletLand Site
+name: Build KotletLand Site
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - "kootletland-sync/**"
+      - "kotletland-sync/**"
       - ".github/workflows/plugin-build.yml"
   workflow_dispatch:
 
