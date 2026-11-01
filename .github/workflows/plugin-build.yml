@@ -1,10 +1,10 @@
-name: Build KootletLandSync
+name: Build KotletLandSync
 
 on:
   push:
     branches: [main]
     paths:
-      - "kootletland-sync/**"
+      - "kotletland-sync/**"
       - ".github/workflows/plugin-build.yml"
   workflow_dispatch:
 
@@ -18,9 +18,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - run: mvn -q -f kootletland-sync/pom.xml clean package
+      - run: mvn -q -f kotletland-sync/pom.xml clean package
       - uses: actions/upload-artifact@v4
         with:
-          name: KootletLandSync-1.4.0
-          path: kootletland-sync/target/kootletland-sync-*.jar
+          name: KotletLandSync-1.4.0
+          path: kotletland-sync/target/kotletland-sync-*.jar
           if-no-files-found: error

@@ -1,0 +1,25 @@
+name: KotletLandSync
+version: 1.3.0
+main: ir.kotletland.sync.KotletLandSync
+api-version: '1.21'
+depend:
+  - LuckPerms
+description: Syncs Minecraft player data and LuckPerms ranks to KotletLand.
+authors:
+  - TheROMZ52
+commands:
+  kotletlandsync:
+    description: KotletLandSync administration command
+    usage: /kotletlandsync reload
+    permission: kotletlandsync.reload
+  link:
+    description: Link your Minecraft account to KotletLand
+    usage: /link <8-digit-code> | /link status | /link notifications | /link unlink
+    permission: kotletlandsync.link
+permissions:
+  kotletlandsync.reload:
+    description: Allows reloading KotletLandSync
+    default: op
+  kotletlandsync.link:
+    description: Allows using the Minecraft account link command
+    default: true

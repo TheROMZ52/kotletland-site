@@ -44,7 +44,7 @@ npm run build
 
 سابقه مجازات‌ها از جدول‌های خود LiteBans خوانده می‌شود (`litebans_bans`, `litebans_mutes`, `litebans_warnings`, `litebans_kicks`) و به جدول جداگانه‌ای در دیتابیس سایت کپی نمی‌شود.
 
-سایت و افزونه‌ی `kootletland-sync` باید از همان MySQL مشترک استفاده کنند.
+سایت و افزونه‌ی `kotletland-sync` باید از همان MySQL مشترک استفاده کنند.
 
 ## اتصال Minecraft
 

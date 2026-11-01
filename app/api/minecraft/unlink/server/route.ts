@@ -4,7 +4,7 @@ import { db } from '@/lib/db'
 import { notifyUser } from '@/lib/notifications'
 
 async function authorized(request: Request) {
-  const received = request.headers.get('x-kootletland-server-token')?.trim()
+  const received = request.headers.get('x-kotletland-server-token')?.trim()
   if (!received) return false
   const tokenHash = createHash('sha256').update(received).digest('hex')
   const [rows] = await db.execute<any[]>(
