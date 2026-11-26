@@ -1,7 +1,7 @@
 // Everything you are likely to want to edit lives in this file.
 
 export const siteName = 'NexvorDev'
-export const serverAddress = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'play.kootletland.kal.how'
+export const serverAddress = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'sv.nexvordev.ir'
 
 /** Community group/channel on Rubika. Override with NEXT_PUBLIC_RUBIKA_URL if the id ever changes. */
 export const rubikaUrl = process.env.NEXT_PUBLIC_RUBIKA_URL || 'https://rubika.ir/kootletland'
