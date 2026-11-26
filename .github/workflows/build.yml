@@ -1,10 +1,10 @@
-name: Build KotletLand Site
+name: Build NexvorDev Site
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - "kotletland-sync/**"
+      - "nexvordev-sync/**"
       - ".github/workflows/plugin-build.yml"
   workflow_dispatch:
 

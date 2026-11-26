@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050505,35:171717,70:303030,100:050505&height=190&section=header&text=KotletLand%20Website&fontSize=54&fontColor=ffffff&fontAlignY=38&desc=THE%20WEB%20HUB%20FOR%20THE%20NETWORK&descAlignY=62&descSize=13" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050505,35:171717,70:303030,100:050505&height=190&section=header&text=NexvorDev%20Website&fontSize=54&fontColor=ffffff&fontAlignY=38&desc=THE%20WEB%20HUB%20FOR%20THE%20NETWORK&descAlignY=62&descSize=13" width="100%" />
 
 <br/>
 
@@ -8,7 +8,7 @@
 
 <br/>
 
-### The KotletLand hub: live server info, news, accounts, and support — no actual کتلت delivery (yet).
+### The NexvorDev hub: live server info, news, accounts, and support — no actual کتلت delivery (yet).
 
 <img src="https://skillicons.dev/icons?i=nextjs,react,ts,mysql,vercel&theme=dark" />
 
@@ -16,7 +16,7 @@
 
 ---
 
-The official website for the KotletLand Minecraft server. It brings together live server status, news, rules, the store, player accounts, and support.
+The official website for the NexvorDev Minecraft server. It brings together live server status, news, rules, the store, player accounts, and support.
 
 Built with Next.js (App Router) and a MySQL database shared by the website and the Minecraft server.
 
@@ -63,7 +63,7 @@ Main website tables:
 
 Punishment history is read directly from LiteBans tables (`litebans_bans`, `litebans_mutes`, `litebans_warnings`, and `litebans_kicks`). It is not copied into a separate website table.
 
-The website and the `kotletland-sync` plugin must use the same shared MySQL database.
+The website and the `nexvordev-sync` plugin must use the same shared MySQL database.
 
 ---
 

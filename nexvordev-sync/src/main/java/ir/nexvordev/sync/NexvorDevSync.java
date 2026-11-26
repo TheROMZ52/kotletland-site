@@ -1,4 +1,4 @@
-package ir.kotletland.sync;
+package ir.nexvordev.sync;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -33,7 +33,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.concurrent.CompletableFuture;
 
-public final class KotletLandSync extends JavaPlugin implements Listener {
+public final class NexvorDevSync extends JavaPlugin implements Listener {
     private LuckPerms luckPerms;
     private Database database;
     private HttpClient httpClient;
@@ -73,7 +73,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
         long notificationInterval = Math.max(5, getConfig().getLong("notifications.poll-seconds", 15));
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::pollNotifications, 60L, notificationInterval * 20L);
 
-        getLogger().info("KotletLandSync enabled.");
+        getLogger().info("NexvorDevSync enabled.");
     }
 
     @Override
@@ -85,10 +85,10 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("kotletlandsync")) {
+        if (command.getName().equalsIgnoreCase("nexvordevsync")) {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-                if (!sender.hasPermission("kotletlandsync.reload")) {
-                    sender.sendMessage("§cYou do not have permission to reload KotletLandSync.");
+                if (!sender.hasPermission("nexvordevsync.reload")) {
+                    sender.sendMessage("§cYou do not have permission to reload NexvorDevSync.");
                     return true;
                 }
 
@@ -96,11 +96,11 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
                 loadServerConfig();
                 database.initialize();
                 registerServer();
-                sender.sendMessage("§aKotletLandSync configuration reloaded.");
+                sender.sendMessage("§aNexvorDevSync configuration reloaded.");
                 return true;
             }
 
-            sender.sendMessage("§eUsage: /kotletlandsync reload");
+            sender.sendMessage("§eUsage: /nexvordevsync reload");
             return true;
         }
 
@@ -142,10 +142,10 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
         database.getLinkedAccount(uuid).thenAccept(result -> Bukkit.getScheduler().runTask(this, () -> {
             if (!player.isOnline()) return;
             if (result == null) {
-                player.sendMessage("§eحساب Minecraft شما هنوز به سایت کتلت‌لند متصل نشده است.");
+                player.sendMessage("§eحساب Minecraft شما هنوز به سایت NexvorDev متصل نشده است.");
                 return;
             }
-            player.sendMessage("§aحساب شما به سایت کتلت‌لند متصل است.");
+            player.sendMessage("§aحساب شما به سایت NexvorDev متصل است.");
             player.sendMessage("§7حساب سایت: §f" + result);
         })).exceptionally(error -> {
             Bukkit.getScheduler().runTask(this, () -> {
@@ -168,7 +168,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
                 if (!player.isOnline() || notifications.isEmpty()) return;
                 List<Long> ids = new ArrayList<>();
                 for (Notification notification : notifications) {
-                    player.sendMessage("§6§lکتلت‌لند §8» §e" + notification.title());
+                    player.sendMessage("§6§lNexvorDev §8» §e" + notification.title());
                     player.sendMessage("§f" + notification.message());
                     ids.add(notification.id());
                 }
@@ -194,7 +194,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
             request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/minecraft/unlink/server"))
                 .header("Content-Type", "application/json")
-                .header("x-kotletland-server-token", serverToken)
+                .header("x-nexvordev-server-token", serverToken)
                 .timeout(java.time.Duration.ofSeconds(10))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
@@ -207,7 +207,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
             .thenAccept(response -> Bukkit.getScheduler().runTask(this, () -> {
                 if (!player.isOnline()) return;
                 if (response.statusCode() == 200) {
-                    player.sendMessage("§aاتصال حساب Minecraft شما با سایت کتلت‌لند قطع شد.");
+                    player.sendMessage("§aاتصال حساب Minecraft شما با سایت NexvorDev قطع شد.");
                 } else if (response.statusCode() == 404) {
                     player.sendMessage("§eاین حساب Minecraft به هیچ حساب سایتی متصل نیست.");
                 } else if (response.statusCode() == 401) {
@@ -245,7 +245,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
             request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/api/minecraft/link/verify"))
                 .header("Content-Type", "application/json")
-                .header("x-kotletland-server-token", serverToken)
+                .header("x-nexvordev-server-token", serverToken)
                 .timeout(java.time.Duration.ofSeconds(10))
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
@@ -259,7 +259,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
                 if (!player.isOnline()) return;
 
                 if (response.statusCode() == 200) {
-                    player.sendMessage("§aحساب Minecraft شما با موفقیت به حساب سایت کتلت‌لند متصل شد.");
+                    player.sendMessage("§aحساب Minecraft شما با موفقیت به حساب سایت NexvorDev متصل شد.");
                 } else if (response.statusCode() == 400) {
                     player.sendMessage("§cکد لینک نامعتبر یا منقضی شده است.");
                 } else if (response.statusCode() == 401) {
@@ -310,7 +310,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
             }
             data.save(file);
         } catch (Exception e) {
-            throw new RuntimeException("Could not save KotletLandSync identity.", e);
+            throw new RuntimeException("Could not save NexvorDevSync identity.", e);
         }
     }
 
@@ -351,7 +351,7 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
         httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
             .thenAccept(response -> {
                 if (response.statusCode() == 200) {
-                    getLogger().info("Minecraft server registered with KotletLand automatically.");
+                    getLogger().info("Minecraft server registered with NexvorDev automatically.");
                 } else {
                     getLogger().warning("Automatic server registration returned HTTP " + response.statusCode() + ".");
                 }
@@ -410,10 +410,10 @@ public final class KotletLandSync extends JavaPlugin implements Listener {
     record Notification(long id, String title, String message) {}
 
     final class Database {
-        private final KotletLandSync plugin;
+        private final NexvorDevSync plugin;
         private volatile CompletableFuture<Void> ready = CompletableFuture.completedFuture(null);
 
-        Database(KotletLandSync plugin) {
+        Database(NexvorDevSync plugin) {
             this.plugin = plugin;
         }
 

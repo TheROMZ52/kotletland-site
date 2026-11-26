@@ -6,11 +6,11 @@ export const dynamic = 'force-static'
 export function GET() {
   const base = getSiteUrl()
   const host = new URL(base).host
-  const body = `# کتلت‌لند — اطلاعات کامل برای مدل‌های زبانی و Agentها
+  const body = `# NexvorDev — اطلاعات کامل برای مدل‌های زبانی و Agentها
 
 ## هویت
-نام سایت: کتلت‌لند
-نام انگلیسی: KotletLand
+نام سایت: NexvorDev
+نام انگلیسی: NexvorDev
 نوع: وب‌سایت رسمی یک سرور Minecraft فارسی
 پلتفرم اصلی: Minecraft Java Edition
 وب‌سایت: ${base}/

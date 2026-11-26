@@ -8,7 +8,7 @@ import { pageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = pageMetadata({
   title: 'پشتیبانی سرور',
-  description: 'پشتیبانی کتلت‌لند برای مشکلات اکانت، گزارش بازیکن، وضعیت سرور و سؤال‌های پرتکرار Minecraft.',
+  description: 'پشتیبانی NexvorDev برای مشکلات اکانت، گزارش بازیکن، وضعیت سرور و سؤال‌های پرتکرار Minecraft.',
   path: '/support'
 })
 
@@ -37,7 +37,7 @@ export default function SupportPage() {
           </li>
           <li>
             <h2>روبیکا</h2>
-            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. آی‌دی: <span className="ltr">@kotletland</span></p>
+            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. آی‌دی: <span className="ltr">@nexvordev</span></p>
             <a className="btn btn-ghost" href={rubikaUrl} target="_blank" rel="noopener noreferrer">ورود به روبیکا</a>
           </li>
           <li>

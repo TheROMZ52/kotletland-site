@@ -1,0 +1,25 @@
+name: NexvorDevSync
+version: 1.3.0
+main: ir.nexvordev.sync.NexvorDevSync
+api-version: '1.21'
+depend:
+  - LuckPerms
+description: Syncs Minecraft player data and LuckPerms ranks to NexvorDev.
+authors:
+  - TheROMZ52
+commands:
+  nexvordevsync:
+    description: NexvorDevSync administration command
+    usage: /nexvordevsync reload
+    permission: nexvordevsync.reload
+  link:
+    description: Link your Minecraft account to NexvorDev
+    usage: /link <8-digit-code> | /link status | /link notifications | /link unlink
+    permission: nexvordevsync.link
+permissions:
+  nexvordevsync.reload:
+    description: Allows reloading NexvorDevSync
+    default: op
+  nexvordevsync.link:
+    description: Allows using the Minecraft account link command
+    default: true

@@ -7,7 +7,7 @@ import { pageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = pageMetadata({
   title: 'قوانین سرور',
-  description: 'قوانین سرور ماینکرفت کتلت‌لند؛ قوانین چت، بازی منصفانه، ساخت‌وساز و گزارش تخلف را قبل از ورود بخوان.',
+  description: 'قوانین سرور ماینکرفت NexvorDev؛ قوانین چت، بازی منصفانه، ساخت‌وساز و گزارش تخلف را قبل از ورود بخوان.',
   path: '/rules'
 })
 

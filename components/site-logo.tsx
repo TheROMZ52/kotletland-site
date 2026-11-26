@@ -17,7 +17,7 @@ export function SiteLogo() {
   return (
     <span className="brand">
       <SiteMark />
-      <span className="brand-word">کتلت‌لند</span>
+      <span className="brand-word">NexvorDev</span>
     </span>
   )
 }

@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = pageMetadata({
   title: 'وضعیت سرور ماینکرفت',
-  description: 'وضعیت آنلاین بودن سرور ماینکرفت کتلت‌لند و تعداد بازیکنان آنلاین را بررسی کن.',
+  description: 'وضعیت آنلاین بودن سرور ماینکرفت NexvorDev و تعداد بازیکنان آنلاین را بررسی کن.',
   path: '/status'
 })
 

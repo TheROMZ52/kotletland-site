@@ -10,7 +10,7 @@ import { absoluteUrl } from '@/lib/site'
 
 export const metadata: Metadata = pageMetadata({
   title: 'راهنمای شروع سریع',
-  description: 'اولین بار است وارد کتلت‌لند می‌شوی؟ آدرس سرور، مراحل اتصال، ساخت اکانت، قابلیت‌های سرور و قوانین مهم را اینجا ببین.',
+  description: 'اولین بار است وارد NexvorDev می‌شوی؟ آدرس سرور، مراحل اتصال، ساخت اکانت، قابلیت‌های سرور و قوانین مهم را اینجا ببین.',
   path: '/guide'
 })
 

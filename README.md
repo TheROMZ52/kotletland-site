@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050505,35:171717,70:303030,100:050505&height=190&section=header&text=KotletLand%20Website&fontSize=54&fontColor=ffffff&fontAlignY=38&desc=THE%20WEB%20HUB%20FOR%20THE%20NETWORK&descAlignY=62&descSize=13" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:050505,35:171717,70:303030,100:050505&height=190&section=header&text=NexvorDev%20Website&fontSize=54&fontColor=ffffff&fontAlignY=38&desc=THE%20WEB%20HUB%20FOR%20THE%20NETWORK&descAlignY=62&descSize=13" width="100%" />
 
 <br/>
 
@@ -8,11 +8,11 @@
 
 <br/>
 
-## کتلت‌لند — وب‌سایت
+## NexvorDev — وب‌سایت
 
 [فارسی](README.md) · [English](README.en.md)
 
-### اینجا مرکز فرماندهی کتلت‌لنده؛ خبرها، آمار و حساب بازیکن‌ها یک‌جا جمع شده‌اند. (بوی کتلت هنوز از دیتابیس پشتیبانی نمی‌شه.)
+### اینجا مرکز فرماندهی NexvorDev است؛ خبرها، آمار و حساب بازیکن‌ها یک‌جا جمع شده‌اند. (بوی کتلت هنوز از دیتابیس پشتیبانی نمی‌شه.)
 
 <img src="https://skillicons.dev/icons?i=nextjs,react,ts,mysql,vercel&theme=dark" />
 
@@ -20,7 +20,7 @@
 
 ---
 
-سایت رسمی سرور ماینکرفت کتلت‌لند: وضعیت زنده‌ی سرور، اخبار، قوانین، فروشگاه، اکانت بازیکن و پشتیبانی.
+سایت رسمی سرور ماینکرفت NexvorDev: وضعیت زنده‌ی سرور، اخبار، قوانین، فروشگاه، اکانت بازیکن و پشتیبانی.
 ساخته‌شده با Next.js (App Router) و یک دیتابیس MySQL مشترک بین سایت و سرور Minecraft.
 
 ---
@@ -64,7 +64,7 @@ npm run build
 
 سابقه مجازات‌ها از جدول‌های خود LiteBans خوانده می‌شود (`litebans_bans`, `litebans_mutes`, `litebans_warnings`, `litebans_kicks`) و به جدول جداگانه‌ای در دیتابیس سایت کپی نمی‌شود.
 
-سایت و افزونه‌ی `kotletland-sync` باید از همان MySQL مشترک استفاده کنند.
+سایت و افزونه‌ی `nexvordev-sync` باید از همان MySQL مشترک استفاده کنند.
 
 ---
 
