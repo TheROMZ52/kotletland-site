@@ -1,4 +1,4 @@
-const FALLBACK_SITE_URL = 'https://kootletlan-site.vercel.app'
+const FALLBACK_SITE_URL = 'https://mc.nexvordev.ir'
 
 /**
  * Public URL of the website itself (NOT the Minecraft server address).
