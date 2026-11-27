@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PageHeader } from '@/components/page-header'
-import { faq, rubikaUrl } from '@/lib/data'
+import { faq, telegramGroupUrl, telegramUrl, teamspeakAddress } from '@/lib/data'
 import { JsonLd } from '@/components/json-ld'
 import { RelatedLinks } from '@/components/related-links'
 import { pageMetadata } from '@/lib/seo'
@@ -36,9 +36,9 @@ export default function SupportPage() {
             <Link className="btn btn-primary" href="/account">ثبت تیکت</Link>
           </li>
           <li>
-            <h2>روبیکا</h2>
-            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. آی‌دی: <span className="ltr">@nexvordev</span></p>
-            <a className="btn btn-ghost" href={rubikaUrl} target="_blank" rel="noopener noreferrer">ورود به روبیکا</a>
+            <h2>تلگرام و تیم‌اسپیک</h2>
+            <p>با بقیه‌ی بازیکن‌ها و استاف چت کن. کانال: <span className="ltr">@NexvorDeveloper</span> | گروه: <span className="ltr">@NexvorDeveloper_Gap</span> | تیم‌اسپیک: <span className="ltr">{teamspeakAddress}</span></p>
+            <a className="btn btn-ghost" href={telegramGroupUrl} target="_blank" rel="noopener noreferrer">ورود به گروه</a> <a className="btn btn-ghost" href={telegramUrl} target="_blank" rel="noopener noreferrer">کانال تلگرام</a>
           </li>
           <li>
             <h2>وضعیت سرور</h2>

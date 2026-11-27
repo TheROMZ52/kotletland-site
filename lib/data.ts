@@ -3,8 +3,11 @@
 export const siteName = 'NexvorDev'
 export const serverAddress = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'sv.nexvordev.ir'
 
-/** Community group/channel on Rubika. Override with NEXT_PUBLIC_RUBIKA_URL if the id ever changes. */
-export const rubikaUrl = process.env.NEXT_PUBLIC_RUBIKA_URL || 'https://rubika.ir/kootletland'
+/** Community links. Override the channel with NEXT_PUBLIC_TELEGRAM_URL if the id ever changes. */
+export const telegramUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL || 'https://t.me/NexvorDeveloper'
+export const telegramGroupUrl = 'https://t.me/NexvorDeveloper_Gap'
+export const telegramBotUrl = 'https://t.me/nexvordevbot'
+export const teamspeakAddress = 'ts.nexvordev.ir'
 
 /** Add vote sites here. While this list is empty, the Vote page is hidden from the menu. */
 export type VoteSite = { name: string; url: string; note?: string }
