@@ -3,7 +3,7 @@ import { SiteLogo } from './site-logo'
 import { MainNav } from './main-nav'
 import { StatusPill } from './server-status'
 import { CopyIp } from './copy-ip'
-import { navLinks, rubikaUrl, serverAddress, siteName } from '@/lib/data'
+import { navLinks, serverAddress, siteName, telegramGroupUrl, telegramUrl } from '@/lib/data'
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
@@ -40,7 +40,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               <li><Link href="/guide">شروع سریع</Link></li>
               <li><Link href="/leaderboard">برترین‌ها</Link></li>
               <li><Link href="/account">حساب من</Link></li>
-              <li><a href={rubikaUrl} target="_blank" rel="noopener noreferrer">روبیکا</a></li>
+              <li><a href={telegramUrl} target="_blank" rel="noopener noreferrer">کانال تلگرام</a></li>
+              <li><a href={telegramGroupUrl} target="_blank" rel="noopener noreferrer">گروه تلگرام</a></li>
             </ul>
           </nav>
           <div className="footer-join">

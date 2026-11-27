@@ -8,7 +8,7 @@ import { JsonLd } from '@/components/json-ld'
 import { SiteShell } from '@/components/site-shell'
 import { StatusProvider } from '@/components/status-provider'
 import { absoluteUrl, getSiteUrl } from '@/lib/site'
-import { rubikaUrl, siteName } from '@/lib/data'
+import { siteName, telegramUrl } from '@/lib/data'
 
 const siteUrl = getSiteUrl()
 
@@ -185,7 +185,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         url: siteUrl,
         logo: absoluteUrl('/logo.png'),
         description: 'NexvorDev، سرور ماینکرفت جاوا برای فارسی‌زبان‌ها.',
-        sameAs: [rubikaUrl]
+        sameAs: [telegramUrl]
       },
       {
         '@type': 'WebSite',
