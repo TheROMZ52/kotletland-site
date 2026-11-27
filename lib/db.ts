@@ -249,12 +249,15 @@ async function initializeDatabase(target: mysql.Pool) {
     ) ENGINE=InnoDB
   `)
 
-  const [productCount] = await target.query<any[]>('SELECT COUNT(*) AS count FROM store_products')
-  if (Number(productCount[0]?.count ?? 0) === 0) {
-    const ranks = ['VIP', 'VIP+', 'MVP', 'MVP+', 'ELITE', 'LEGEND', 'NEXVOR']
-    for (const rank of ranks) {
-      await target.execute('INSERT INTO store_products (name, description, price, currency) VALUES (?, ?, 0, ?)', [rank, `رنک ${rank} سرور NexvorDev`, 'COINS'])
-    }
+  const shopRanks: Array<[string, number]> = [
+    ['VIP', 49000], ['VIP+', 79000], ['MVP', 119000], ['MVP+', 169000], ['ELITE', 249000], ['LEGEND', 349000], ['NEXVOR', 499000]
+  ]
+  for (const [rank, price] of shopRanks) {
+    await target.execute(
+      'INSERT INTO store_products (name, description, price, currency) SELECT ?, ?, ?, ? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM store_products WHERE name = ?)',
+      [rank, `رنک ${rank} سرور NexvorDev`, price, 'TOMAN', rank]
+    )
+    await target.execute("UPDATE store_products SET price = ?, currency = 'TOMAN' WHERE name = ? AND price = 0", [price, rank])
   }
 
   await target.query(`
