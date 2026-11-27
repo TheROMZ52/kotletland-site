@@ -55,6 +55,9 @@ export default async function Home() {
             <img src="/logo.png" width={420} height={420} alt="" fetchPriority="high" />
           </div>
         </div>
+      </section>
+
+      <section className="portals-section">
         <div className="container"><PortalCards /></div>
       </section>
 
