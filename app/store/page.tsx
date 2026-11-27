@@ -8,7 +8,7 @@ import { pageMetadata } from '@/lib/seo'
 export const revalidate = 60
 export const metadata: Metadata = pageMetadata({
   title: 'فروشگاه ماینکرفت',
-  description: 'فروشگاه کتلت‌لند برای پکیج‌ها و رنک‌های حمایتی سرور ماینکرفت. وضعیت خرید آنلاین و محصولات را از این صفحه دنبال کن.',
+  description: 'فروشگاه NexvorDev برای پکیج‌ها و رنک‌های حمایتی سرور ماینکرفت. وضعیت خرید آنلاین و محصولات را از این صفحه دنبال کن.',
   path: '/store'
 })
 
@@ -39,7 +39,7 @@ export default async function StorePage() {
       <PageHeader
         title="فروشگاه"
         path="/store"
-        lead="پکیج‌های حمایتی کتلت‌لند. خرید آنلاین هنوز فعال نشده و به‌زودی از همین صفحه انجام می‌شود."
+        lead="پکیج‌های حمایتی NexvorDev. خرید آنلاین هنوز فعال نشده و به‌زودی از همین صفحه انجام می‌شود."
       />
       <div className="container">
         {items.length === 0 && (

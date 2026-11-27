@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/seo'
 export const revalidate = 60
 export const metadata: Metadata = pageMetadata({
   title: 'برترین بازیکن‌ها',
-  description: 'برترین بازیکن‌های کتلت‌لند بر اساس زمان بازی، سکه و کیل؛ جدول رده‌بندی سرور ماینکرفت فارسی.',
+  description: 'برترین بازیکن‌های NexvorDev بر اساس زمان بازی، سکه و کیل؛ جدول رده‌بندی سرور ماینکرفت فارسی.',
   path: '/leaderboard'
 })
 
@@ -24,7 +24,7 @@ export default async function LeaderboardPage() {
 
   return (
     <>
-      <PageHeader title="برترین‌ها" path="/leaderboard" lead="بازیکن‌های پیشتاز کتلت‌لند؛ جدول‌ها هر چند دقیقه به‌روز می‌شوند." />
+      <PageHeader title="برترین‌ها" path="/leaderboard" lead="بازیکن‌های پیشتاز NexvorDev؛ جدول‌ها هر چند دقیقه به‌روز می‌شوند." />
       <div className="container board-grid">
         {boards.map((board, index) => (
           <section key={board.metric} className="board" aria-labelledby={`board-${board.metric}`}>

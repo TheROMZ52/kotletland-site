@@ -1,5 +1,5 @@
 /* ==========================================================================
-   کتلت‌لند — design tokens
+   NexvorDev — design tokens
    The site is a sandwich: every colour is a layer (bun, lettuce, patty, tomato)
    on a deep pickle-green page. Buttons, cards and layers share one "block" look:
    a lit top edge, a shaded bottom edge and a hard shadow, like a Minecraft block.
@@ -915,7 +915,7 @@ html {
 }
 
 /* ==========================================================================
-   KotletLand visual direction v2
+   NexvorDev visual direction v2
    Editorial Minecraft server landing: chunky geometry, quieter chrome,
    oversized type, and a single luminous sandwich signature.
    ========================================================================== */
@@ -1335,7 +1335,7 @@ body {
 
 
 /* ==========================================================================
-   KotletLand visual direction v3
+   NexvorDev visual direction v3
    Neon editorial / Minecraft command-center landing
    ========================================================================== */
 
@@ -1431,7 +1431,7 @@ body {
 }
 
 .hero-copy::before {
-  content: 'KOTLETLAND // ONLINE';
+  content: 'NEXVORDEV // ONLINE';
   display: inline-flex;
   align-items: center;
   min-height: 30px;

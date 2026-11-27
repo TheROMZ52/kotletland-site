@@ -1,10 +1,10 @@
-name: Build KotletLand Site
+name: Build NexvorDev Site
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - "kotletland-sync/**"
+      - "nexvordev-sync/**"
       - ".github/workflows/plugin-build.yml"
   workflow_dispatch:
 
@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_SERVER_ADDRESS: play.kootletland.kal.how
+      NEXT_PUBLIC_SERVER_ADDRESS: sv.nexvordev.ir
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

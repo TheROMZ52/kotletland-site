@@ -27,7 +27,7 @@ export default async function AdminPage() {
 
   return (
     <div className="container">
-      <header className="page-head"><h1>مدیریت کتلت‌لند</h1><p>سلام {user.username}؛ کنترل سایت، بازیکن‌ها، اخبار و پشتیبانی.</p></header>
+      <header className="page-head"><h1>مدیریت NexvorDev</h1><p>سلام {user.username}؛ کنترل سایت، بازیکن‌ها، اخبار و پشتیبانی.</p></header>
       <div className="admin-stat-grid">
         <div className="admin-stat"><strong>{players[0]?.count ?? 0}</strong><span>کل بازیکن‌ها</span></div>
         <div className="admin-stat"><strong>{online[0]?.count ?? 0}</strong><span>آنلاین</span></div>

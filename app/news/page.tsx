@@ -8,7 +8,7 @@ import { pageMetadata } from '@/lib/seo'
 export const revalidate = 60
 export const metadata: Metadata = pageMetadata({
   title: 'اخبار ماینکرفت',
-  description: 'آخرین اخبار، اطلاعیه‌ها، به‌روزرسانی‌ها و راهنماهای کتلت‌لند، سرور ماینکرفت فارسی.',
+  description: 'آخرین اخبار، اطلاعیه‌ها، به‌روزرسانی‌ها و راهنماهای NexvorDev، سرور ماینکرفت فارسی.',
   path: '/news'
 })
 
@@ -16,7 +16,7 @@ export default async function NewsPage() {
   const news = await getNews()
   return (
     <>
-      <PageHeader title="اخبار" path="/news" lead="آپدیت‌ها، اطلاعیه‌ها و اتفاق‌های کتلت‌لند." />
+      <PageHeader title="اخبار" path="/news" lead="آپدیت‌ها، اطلاعیه‌ها و اتفاق‌های NexvorDev." />
       <div className="container">
         {news.length ? (
           <ul className="news-list">{news.map((item) => <NewsRow key={item.slug} item={item} />)}</ul>

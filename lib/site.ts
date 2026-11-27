@@ -1,8 +1,8 @@
-const FALLBACK_SITE_URL = 'https://kootletlan-site.vercel.app'
+const FALLBACK_SITE_URL = 'https://mc.nexvordev.ir'
 
 /**
  * Public URL of the website itself (NOT the Minecraft server address).
- * Set NEXT_PUBLIC_SITE_URL to your custom domain (e.g. https://kootletland.ir) and
+ * Set NEXT_PUBLIC_SITE_URL to your custom domain (e.g. https://mc.nexvordev.ir) and
  * every canonical tag, sitemap entry, JSON-LD block and llms.txt URL follows it.
  */
 export function getSiteUrl() {

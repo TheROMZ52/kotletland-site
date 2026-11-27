@@ -28,7 +28,7 @@ export default function AdminPreviewPage() {
   return (
     <div className="container">
       <header className="page-head">
-        <h1>پیش‌نمایش مدیریت کتلت‌لند</h1>
+        <h1>پیش‌نمایش مدیریت NexvorDev</h1>
         <p>این صفحه فقط برای دیدن ظاهر پنل است و به دیتابیس یا عملیات واقعی ادمینی وصل نیست.</p>
       </header>
 
@@ -84,7 +84,7 @@ export default function AdminPreviewPage() {
       <section className="block">
         <h2>اخبار</h2>
         <div className="admin-table">
-          <div className="admin-row"><strong>بازگشت کتلت‌لند</strong><span>منتشر شده</span><span>امروز</span></div>
+          <div className="admin-row"><strong>بازگشت NexvorDev</strong><span>منتشر شده</span><span>امروز</span></div>
           <div className="admin-row"><strong>آپدیت سایت</strong><span>پیش‌نویس</span><span>دیروز</span></div>
         </div>
       </section>

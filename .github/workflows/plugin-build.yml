@@ -1,10 +1,10 @@
-name: Build KotletLandSync
+name: Build NexvorDevSync
 
 on:
   push:
     branches: [main]
     paths:
-      - "kotletland-sync/**"
+      - "nexvordev-sync/**"
       - ".github/workflows/plugin-build.yml"
   workflow_dispatch:
 
@@ -18,9 +18,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
-      - run: mvn -q -f kotletland-sync/pom.xml clean package
+      - run: mvn -q -f nexvordev-sync/pom.xml clean package
       - uses: actions/upload-artifact@v4
         with:
-          name: KotletLandSync-1.4.0
-          path: kotletland-sync/target/kotletland-sync-*.jar
+          name: NexvorDevSync-1.4.0
+          path: nexvordev-sync/target/nexvordev-sync-*.jar
           if-no-files-found: error

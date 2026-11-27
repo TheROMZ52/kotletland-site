@@ -5,7 +5,7 @@ import { navLinks } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'صفحه پیدا نشد',
-  description: 'صفحه‌ای که دنبالش بودی در کتلت‌لند پیدا نشد. از این‌جا به بخش‌های اصلی سایت برگرد.',
+  description: 'صفحه‌ای که دنبالش بودی در NexvorDev پیدا نشد. از این‌جا به بخش‌های اصلی سایت برگرد.',
   robots: { index: false, follow: true }
 }
 
