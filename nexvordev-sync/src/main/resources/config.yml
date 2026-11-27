@@ -8,7 +8,7 @@ server:
   name: "Survival"
 
 website:
-  url: "https://mc.nexvordev.ir"
+  url: "https://site.nexvordev.ir"
 
 sync:
   interval-seconds: 60

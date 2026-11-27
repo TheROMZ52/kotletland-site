@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_SERVER_ADDRESS: sv.nexvordev.ir
+      NEXT_PUBLIC_SERVER_ADDRESS: mc.nexvordev.ir
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
