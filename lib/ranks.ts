@@ -14,6 +14,8 @@ const RANKS: Record<string, string> = {
   'junior-helper': 'هلپر مبتدی',
   vip: 'VIP',
   'vip+': 'VIP+',
+  vip_plus: 'VIP+',
+  mvp_plus: 'MVP+',
   mvp: 'MVP',
   'mvp+': 'MVP+',
   elite: 'ELITE',
