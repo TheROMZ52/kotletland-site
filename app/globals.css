@@ -2000,3 +2000,10 @@ body::after { left: 45%; animation-duration: 30s; animation-delay: -12s; opacity
   .hero-art { min-height: 240px; }
   .portals-section { margin-top: -40px; }
 }
+
+/* v3.2 — hero title: plain text with glow (gradient clip cut the first letter) */
+.hero-title {
+  background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none;
+  -webkit-text-fill-color: currentColor; color: #f6efff; filter: none; overflow: visible; padding-inline: .05em;
+  text-shadow: 0 0 30px rgba(168, 85, 247, .6), 0 .06em 0 #4c1d95;
+}
