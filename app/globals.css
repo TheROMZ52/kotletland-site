@@ -1900,3 +1900,88 @@ select:focus-visible {
 .board li .game-num { margin-inline-start: auto; color: var(--bread); }
 .guide { display: grid; gap: 36px; padding-bottom: 24px; }
 .guide h2 { margin-bottom: 8px; }
+
+/* ==========================================================================
+   NexvorDev v3 — purple Nether theme, logo, motion
+   ========================================================================== */
+:root {
+  --pickle: #12091f; --pickle-deep: #0b0614; --pickle-2: #1a0f2e; --pickle-3: #24153f;
+  --line: #3d2a66; --ink: #07030f; --bread: #f1e9ff; --muted: #b9a9d6;
+  --surface-0: #08040f; --surface-1: #0f0820; --surface-2: #170d2d; --surface-3: #20123d;
+  --edge: rgba(176, 124, 255, .28); --cream: #f6efff; --subtle: #b3a3d1;
+  --violet: #a855f7;
+}
+html { background: var(--pickle); }
+body {
+  background:
+    radial-gradient(900px 520px at 72% -8%, rgba(168, 85, 247, .22), transparent 65%),
+    radial-gradient(760px 520px at 8% 12%, rgba(255, 200, 61, .07), transparent 62%),
+    linear-gradient(180deg, #160b2b 0%, #08040f 80%);
+  background-attachment: fixed;
+}
+.topbar { background: rgba(10, 5, 20, .72); backdrop-filter: blur(10px); border-bottom-color: rgba(176, 124, 255, .16); }
+.brand-mark { width: 44px; height: 44px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, .6)); transition: transform .4s ease; }
+.brand:hover .brand-mark { transform: rotate(-8deg) scale(1.12); }
+.brand-word { text-shadow: 0 2px 0 #4c1d95, 0 8px 24px rgba(168, 85, 247, .35); }
+.nav-desktop { background: rgba(23, 13, 45, .6); border-color: rgba(176, 124, 255, .14); }
+.nav-desktop a { color: var(--subtle); }
+.footer { background: var(--pickle-deep); }
+.section-tint { background: rgba(26, 15, 46, .7); }
+.hero-title { background: linear-gradient(100deg, #fff 10%, #e9d5ff 40%, #ffc83d 90%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 6s linear infinite; }
+
+/* hero logo */
+.hero-art { position: relative; display: grid; place-items: center; min-height: 320px; }
+.hero-art img { position: relative; width: min(420px, 78vw); height: auto; animation: floaty 5s ease-in-out infinite; filter: drop-shadow(0 20px 50px rgba(168, 85, 247, .55)); }
+.hero-ring { position: absolute; width: min(470px, 86vw); aspect-ratio: 1; border-radius: 50%; border: 2px dashed rgba(216, 180, 254, .35); animation: spin 40s linear infinite; box-shadow: 0 0 80px rgba(168, 85, 247, .25) inset; }
+
+/* portals */
+.portals { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 40px; }
+.portal {
+  position: relative; display: flex; flex-direction: column; gap: 2px; padding: 20px 18px; overflow: hidden;
+  border: 1px solid var(--edge); border-radius: 16px; background: linear-gradient(160deg, rgba(36, 21, 63, .9), rgba(15, 8, 32, .9));
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  animation: rise .6s cubic-bezier(.2, .9, .3, 1) backwards; animation-delay: calc(var(--i) * 90ms + 200ms);
+}
+.portal::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, .12) 50%, transparent 65%); transform: translateX(120%); transition: transform .7s ease; }
+.portal-icon { font-size: 28px; margin-bottom: 6px; }
+.portal-label { font: 400 24px/1.2 var(--font-display); }
+.portal-hint { font-size: 13px; color: var(--subtle); }
+@media (hover: hover) {
+  .portal:hover { transform: translateY(-6px) scale(1.02); border-color: var(--violet); box-shadow: 0 14px 40px rgba(168, 85, 247, .35); }
+  .portal:hover::after { transform: translateX(-120%); }
+  .portal:hover .portal-icon { animation: wiggle .5s ease; }
+}
+
+/* buttons + cards */
+.btn { position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease; }
+.btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, .28) 50%, transparent 60%); transform: translateX(130%); }
+@media (hover: hover) { .btn:hover { transform: translateY(-2px); } .btn:hover::after { transform: translateX(-130%); transition: transform .6s ease; } }
+.features li, .news-row a, .steps li { transition: transform .25s ease, border-color .25s ease; }
+@media (hover: hover) { .features li:hover { transform: translateY(-4px); border-color: var(--violet); } }
+
+/* floating blocks in the background */
+body::before, body::after {
+  content: ''; position: fixed; z-index: -1; pointer-events: none; width: 14px; height: 14px; border-radius: 3px;
+  background: rgba(192, 132, 252, .55); box-shadow: 120px 260px 0 rgba(255, 200, 61, .4), 320px 80px 0 rgba(192, 132, 252, .4), 540px 420px 0 rgba(216, 180, 254, .35), 760px 160px 0 rgba(255, 200, 61, .3), 940px 380px 0 rgba(192, 132, 252, .4);
+  top: 100%; left: 5%; animation: drift 22s linear infinite;
+}
+body::after { left: 45%; animation-duration: 30s; animation-delay: -12s; opacity: .7; }
+
+/* scroll reveal (progressive enhancement) */
+@supports (animation-timeline: view()) {
+  .section h2, .features li, .steps li, .news-row, .cta-inner {
+    animation: rise .8s ease both; animation-timeline: view(); animation-range: entry 0% entry 40%;
+  }
+}
+
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-16px) rotate(1.5deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shine { to { background-position: 200% center; } }
+@keyframes rise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes wiggle { 25% { transform: rotate(-14deg) scale(1.2); } 75% { transform: rotate(12deg) scale(1.2); } }
+@keyframes drift { from { transform: translateY(0) rotate(0); } to { transform: translateY(-130vh) rotate(180deg); } }
+
+@media (max-width: 900px) { .portals { grid-template-columns: repeat(2, 1fr); } .portals .portal:last-child { grid-column: 1 / -1; } .hero-art { min-height: 260px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

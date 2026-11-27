@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CopyIp } from '@/components/copy-ip'
 import { StatusLine } from '@/components/server-status'
-import { SandwichStack } from '@/components/sandwich-stack'
+import { PortalCards } from '@/components/portal-cards'
 import { NewsRow } from '@/components/news-row'
 import { features, joinSteps, serverAddress, siteName } from '@/lib/data'
 import { getNews } from '@/lib/news'
@@ -49,8 +49,13 @@ export default async function Home() {
               <Link className="btn btn-quiet" href="/rules">قوانین</Link>
             </div>
           </div>
-          <SandwichStack />
+          <div className="hero-art" aria-hidden="true">
+            <span className="hero-ring" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" width={420} height={420} alt="" fetchPriority="high" />
+          </div>
         </div>
+        <div className="container"><PortalCards /></div>
       </section>
 
       <section className="section" aria-labelledby="join-title">
