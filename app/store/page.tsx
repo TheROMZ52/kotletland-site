@@ -52,8 +52,14 @@ export default async function StorePage() {
               <h2>{item.name}</h2>
               <p>{item.description}</p>
               <p className="tier-price">
-                <span className="game-num">{formatNumber(item.price)}</span>
-                <span>{currencyLabel[item.currency] ?? item.currency}</span>
+                {item.price > 0 ? (
+                  <>
+                    <span className="game-num">{formatNumber(item.price)}</span>
+                    <span>{currencyLabel[item.currency] ?? item.currency}</span>
+                  </>
+                ) : (
+                  <span>قیمت به‌زودی</span>
+                )}
               </p>
               <button className="btn btn-ghost btn-block" type="button" disabled>به‌زودی</button>
             </li>
