@@ -249,6 +249,14 @@ async function initializeDatabase(target: mysql.Pool) {
     ) ENGINE=InnoDB
   `)
 
+  const [productCount] = await target.query<any[]>('SELECT COUNT(*) AS count FROM store_products')
+  if (Number(productCount[0]?.count ?? 0) === 0) {
+    const ranks = ['VIP', 'VIP+', 'MVP', 'MVP+', 'ELITE', 'LEGEND', 'NEXVOR']
+    for (const rank of ranks) {
+      await target.execute('INSERT INTO store_products (name, description, price, currency) VALUES (?, ?, 0, ?)', [rank, `رنک ${rank} سرور NexvorDev`, 'COINS'])
+    }
+  }
+
   await target.query(`
     CREATE TABLE IF NOT EXISTS store_purchases (
       id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -284,7 +292,16 @@ function getPool() {
   if (pool) return pool
   const url = process.env.DATABASE_URL
   if (!url) throw new Error('DATABASE_URL is not configured')
-  pool = mysql.createPool(url)
+  const parsed = new URL(url)
+  pool = mysql.createPool({
+    host: parsed.hostname,
+    port: Number(parsed.port || 3306),
+    user: decodeURIComponent(parsed.username),
+    password: decodeURIComponent(parsed.password),
+    database: decodeURIComponent(parsed.pathname.slice(1)),
+    connectionLimit: 3,
+    connectTimeout: 8000
+  })
   return pool
 }
 

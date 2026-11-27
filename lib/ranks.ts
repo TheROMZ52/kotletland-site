@@ -13,6 +13,12 @@ const RANKS: Record<string, string> = {
   helper: 'هلپر',
   'junior-helper': 'هلپر مبتدی',
   vip: 'VIP',
+  'vip+': 'VIP+',
+  mvp: 'MVP',
+  'mvp+': 'MVP+',
+  elite: 'ELITE',
+  legend: 'LEGEND',
+  nexvor: 'NEXVOR',
   default: 'بازیکن'
 }
 
