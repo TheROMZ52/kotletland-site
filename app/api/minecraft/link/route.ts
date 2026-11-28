@@ -12,7 +12,7 @@ export async function POST() {
     const expires = new Date(Date.now() + 10 * 60 * 1000)
 
     await db.execute(
-      'INSERT INTO minecraft_link_codes (user_id, code, expires_at) VALUES (?, ?, UTC_TIMESTAMP() + INTERVAL 10 MINUTE) ON DUPLICATE KEY UPDATE code = VALUES(code), expires_at = UTC_TIMESTAMP() + INTERVAL 10 MINUTE',
+      'INSERT INTO minecraft_link_codes (user_id, code, expires_at) VALUES (?, ?, UTC_TIMESTAMP() + INTERVAL 10 MINUTE) ON CONFLICT (user_id) DO UPDATE SET code = EXCLUDED.code, expires_at = now() + INTERVAL 10 MINUTE',
       [user.id, code]
     )
 
