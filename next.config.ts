@@ -3,7 +3,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  serverExternalPackages: ['mysql2'],
+  serverExternalPackages: ['pg'],
   async headers() {
     return [
       {

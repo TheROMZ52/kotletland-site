@@ -1,350 +1,68 @@
-import mysql from 'mysql2/promise'
+import { Pool, types } from 'pg'
 
-let pool: mysql.Pool | null = null
-let ready: Promise<void> | null = null
+// Keep the MySQL-flavoured behaviour the rest of the code base was written for.
+types.setTypeParser(20, (value) => Number(value)) // bigint / count(*)
+types.setTypeParser(1700, (value) => Number(value)) // numeric / sum()
+types.setTypeParser(16, (value) => (value === 't' ? 1 : 0)) // boolean -> 1 / 0
 
-async function initializeDatabase(target: mysql.Pool) {
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id CHAR(36) NOT NULL,
-      username VARCHAR(16) NOT NULL,
-      email VARCHAR(320) NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
-      email_verified BOOLEAN NOT NULL DEFAULT FALSE,
-      role ENUM('user','moderator','admin') NOT NULL DEFAULT 'user',
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      UNIQUE KEY uq_users_username (username),
-      UNIQUE KEY uq_users_email (email)
-    ) ENGINE=InnoDB
-  `)
+let pool: Pool | null = null
 
-  const [accountColumns] = await target.query<any[]>(
-    "SELECT column_name FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'users' AND column_name IN ('is_banned','ban_reason','banned_until')"
-  )
-  const accountColumnNames = new Set(accountColumns.map((row: any) => row.column_name))
-  if (!accountColumnNames.has('is_banned')) await target.query("ALTER TABLE users ADD COLUMN is_banned BOOLEAN NOT NULL DEFAULT FALSE")
-  if (!accountColumnNames.has('ban_reason')) await target.query("ALTER TABLE users ADD COLUMN ban_reason VARCHAR(500) NULL")
-  if (!accountColumnNames.has('banned_until')) await target.query("ALTER TABLE users ADD COLUMN banned_until DATETIME NULL")
-
-  const [roleColumns] = await target.query<any[]>(
-    "SELECT COUNT(*) AS count FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'users' AND column_name = 'role'"
-  )
-  if (Number(roleColumns[0]?.count ?? 0) === 0) {
-    await target.query("ALTER TABLE users ADD COLUMN role ENUM('user','moderator','admin') NOT NULL DEFAULT 'user'")
-  }
-
-  if (process.env.ADMIN_EMAIL) {
-    await target.execute("UPDATE users SET role = 'admin' WHERE email = ?", [process.env.ADMIN_EMAIL.trim().toLowerCase()])
-  }
-
-  const [profileColumns] = await target.query<any[]>(
-    "SELECT column_name FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'profiles'"
-  )
-  const profileColumnNames = new Set(profileColumns.map((row: any) => row.column_name))
-  if (!profileColumnNames.has('minecraft_uuid')) await target.query("ALTER TABLE profiles ADD COLUMN minecraft_uuid CHAR(36) NULL")
-  if (!profileColumnNames.has('minecraft_nickname')) await target.query("ALTER TABLE profiles ADD COLUMN minecraft_nickname VARCHAR(16) NULL")
-  if (!profileColumnNames.has('display_name')) await target.query("ALTER TABLE profiles ADD COLUMN display_name VARCHAR(32) NULL")
-  if (!profileColumnNames.has('created_at')) await target.query("ALTER TABLE profiles ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
-  if (!profileColumnNames.has('updated_at')) await target.query("ALTER TABLE profiles ADD COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS profiles (
-      user_id CHAR(36) NOT NULL,
-      minecraft_uuid CHAR(36) NULL,
-      minecraft_nickname VARCHAR(16) NULL,
-      display_name VARCHAR(32) NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (user_id),
-      UNIQUE KEY uq_profiles_minecraft_uuid (minecraft_uuid),
-      KEY idx_profiles_minecraft_nickname (minecraft_nickname),
-      CONSTRAINT fk_profiles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS players (
-      uuid CHAR(36) NOT NULL,
-      username VARCHAR(16) NOT NULL,
-      skin_url VARCHAR(512) NULL,
-      rank_name VARCHAR(64) NULL,
-      rank_prefix VARCHAR(64) NULL,
-      rank_suffix VARCHAR(64) NULL,
-      rank_weight INT NOT NULL DEFAULT 0,
-      online BOOLEAN NOT NULL DEFAULT FALSE,
-      playtime_minutes BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      coins BIGINT NOT NULL DEFAULT 0,
-      kills BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      deaths BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      first_joined_at DATETIME NULL,
-      last_seen_at DATETIME NULL,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (uuid),
-      UNIQUE KEY uq_players_username (username),
-      KEY idx_players_last_seen (last_seen_at)
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS news (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      slug VARCHAR(160) NOT NULL,
-      title VARCHAR(200) NOT NULL,
-      excerpt VARCHAR(500) NOT NULL,
-      category VARCHAR(64) NOT NULL,
-      content LONGTEXT NULL,
-      pinned BOOLEAN NOT NULL DEFAULT FALSE,
-      published_at DATETIME NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      UNIQUE KEY uq_news_slug (slug),
-      KEY idx_news_listing (pinned, published_at)
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS support_tickets (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      user_id CHAR(36) NOT NULL,
-      subject VARCHAR(120) NOT NULL,
-      message TEXT NOT NULL,
-      status ENUM('open','pending','closed') NOT NULL DEFAULT 'open',
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_tickets_user (user_id),
-      KEY idx_tickets_status (status, created_at),
-      CONSTRAINT fk_tickets_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS ticket_messages (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      ticket_id BIGINT UNSIGNED NOT NULL,
-      user_id CHAR(36) NOT NULL,
-      message TEXT NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_ticket_messages_ticket (ticket_id, created_at),
-      CONSTRAINT fk_ticket_messages_ticket FOREIGN KEY (ticket_id) REFERENCES support_tickets(id) ON DELETE CASCADE,
-      CONSTRAINT fk_ticket_messages_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  const [linkCodeColumns] = await target.query<any[]>(
-    "SELECT column_name FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'minecraft_link_codes'"
-  )
-  const linkCodeColumnNames = new Set(linkCodeColumns.map((row: any) => row.column_name))
-  if (linkCodeColumnNames.size > 0) {
-    if (!linkCodeColumnNames.has('user_id')) await target.query("ALTER TABLE minecraft_link_codes ADD COLUMN user_id CHAR(36) NOT NULL")
-    if (!linkCodeColumnNames.has('code')) await target.query("ALTER TABLE minecraft_link_codes ADD COLUMN code CHAR(8) NOT NULL")
-    if (!linkCodeColumnNames.has('expires_at')) await target.query("ALTER TABLE minecraft_link_codes ADD COLUMN expires_at DATETIME NOT NULL")
-    if (!linkCodeColumnNames.has('created_at')) await target.query("ALTER TABLE minecraft_link_codes ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
-  }
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS minecraft_link_codes (
-      user_id CHAR(36) NOT NULL,
-      code CHAR(8) NOT NULL,
-      expires_at DATETIME NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (user_id),
-      UNIQUE KEY uq_minecraft_link_code (code),
-      CONSTRAINT fk_link_codes_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS minecraft_server_registrations (
-      installation_id CHAR(36) NOT NULL,
-      token_hash CHAR(64) NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (installation_id),
-      UNIQUE KEY uq_minecraft_server_token (token_hash)
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS minecraft_servers (
-      server_id VARCHAR(64) NOT NULL,
-      name VARCHAR(120) NOT NULL,
-      installation_id CHAR(36) NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (server_id),
-      UNIQUE KEY uq_minecraft_server_installation (installation_id)
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS player_server_stats (
-      server_id VARCHAR(64) NOT NULL,
-      uuid CHAR(36) NOT NULL,
-      online BOOLEAN NOT NULL DEFAULT FALSE,
-      playtime_minutes BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      coins BIGINT NOT NULL DEFAULT 0,
-      kills BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      deaths BIGINT UNSIGNED NOT NULL DEFAULT 0,
-      first_joined_at DATETIME NULL,
-      last_seen_at DATETIME NULL,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (server_id, uuid),
-      KEY idx_player_server_uuid (uuid),
-      CONSTRAINT fk_player_server_stats_server FOREIGN KEY (server_id) REFERENCES minecraft_servers(server_id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS admin_audit_logs (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      admin_id CHAR(36) NOT NULL,
-      action VARCHAR(64) NOT NULL,
-      target_user_id CHAR(36) NULL,
-      target_username VARCHAR(16) NULL,
-      details VARCHAR(1000) NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_audit_created (created_at),
-      KEY idx_audit_admin (admin_id, created_at),
-      KEY idx_audit_target (target_user_id, created_at),
-      CONSTRAINT fk_audit_admin FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS notifications (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      user_id CHAR(36) NOT NULL,
-      title VARCHAR(160) NOT NULL,
-      message VARCHAR(1000) NOT NULL,
-      type VARCHAR(32) NOT NULL DEFAULT 'system',
-      link VARCHAR(500) NULL,
-      read_at DATETIME NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_notifications_user (user_id, read_at, created_at),
-      CONSTRAINT fk_notifications_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS store_products (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      name VARCHAR(120) NOT NULL,
-      description TEXT NULL,
-      price INT UNSIGNED NOT NULL,
-      currency VARCHAR(16) NOT NULL DEFAULT 'COINS',
-      command VARCHAR(500) NULL,
-      popular BOOLEAN NOT NULL DEFAULT FALSE,
-      active BOOLEAN NOT NULL DEFAULT TRUE,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_products_active (active, id)
-    ) ENGINE=InnoDB
-  `)
-
-  const shopRanks: Array<[string, number]> = [
-    ['VIP', 49000], ['VIP+', 79000], ['MVP', 119000], ['MVP+', 169000], ['ELITE', 249000], ['LEGEND', 349000], ['NEXVOR', 499000]
-  ]
-  for (const [rank, price] of shopRanks) {
-    await target.execute(
-      'INSERT INTO store_products (name, description, price, currency) SELECT ?, ?, ?, ? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM store_products WHERE name = ?)',
-      [rank, `رنک ${rank} سرور NexvorDev`, price, 'TOMAN', rank]
-    )
-    await target.execute("UPDATE store_products SET price = ?, currency = 'TOMAN' WHERE name = ? AND price = 0", [price, rank])
-  }
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS store_purchases (
-      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-      player_uuid CHAR(36) NOT NULL,
-      product_id BIGINT UNSIGNED NOT NULL,
-      price_paid INT UNSIGNED NOT NULL,
-      status ENUM('pending','completed','failed','refunded') NOT NULL DEFAULT 'pending',
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      completed_at DATETIME NULL,
-      PRIMARY KEY (id),
-      KEY idx_purchases_player (player_uuid, created_at),
-      KEY idx_purchases_product (product_id),
-      CONSTRAINT fk_purchases_player FOREIGN KEY (player_uuid) REFERENCES players(uuid) ON DELETE RESTRICT,
-      CONSTRAINT fk_purchases_product FOREIGN KEY (product_id) REFERENCES store_products(id) ON DELETE RESTRICT
-    ) ENGINE=InnoDB
-  `)
-
-  await target.query(`
-    CREATE TABLE IF NOT EXISTS sessions (
-      id CHAR(64) NOT NULL,
-      user_id CHAR(36) NOT NULL,
-      expires_at DATETIME NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id),
-      KEY idx_sessions_user (user_id),
-      KEY idx_sessions_expires (expires_at),
-      CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB
-  `)
-}
+// Tables with an identity "id" column; INSERTs into them expose insertId like mysql2 did.
+const idTables = new Set(['news', 'support_tickets', 'ticket_messages', 'admin_audit_logs', 'notifications', 'store_products', 'store_purchases'])
 
 function getPool() {
   if (pool) return pool
   const url = process.env.DATABASE_URL
   if (!url) throw new Error('DATABASE_URL is not configured')
-  const parsed = new URL(url)
-  pool = mysql.createPool({
-    host: parsed.hostname,
-    port: Number(parsed.port || 3306),
-    user: decodeURIComponent(parsed.username),
-    password: decodeURIComponent(parsed.password),
-    database: decodeURIComponent(parsed.pathname.slice(1)),
-    connectionLimit: 3,
-    connectTimeout: 8000
+  pool = new Pool({
+    connectionString: url,
+    ssl: { rejectUnauthorized: false },
+    max: 3,
+    connectionTimeoutMillis: 8000,
+    idleTimeoutMillis: 10000
   })
+  pool.on('error', () => {})
   return pool
 }
 
-async function ensureReady(target: mysql.Pool) {
-  if (!ready) {
-    ready = initializeDatabase(target).catch(async (error) => {
-      ready = null
-      pool = null
-      try {
-        await target.end()
-      } catch {}
-      throw error
-    })
+/** Converts the small MySQL dialect used by the app into Postgres. */
+function translate(sql: string) {
+  let text = sql
+    .replace(/`/g, '"')
+    .replace(/UTC_TIMESTAMP\(\)/gi, 'now()')
+    .replace(/INTERVAL\s+(\d+)\s+(SECOND|MINUTE|HOUR|DAY|MONTH)S?\b/gi, (_, amount, unit) => `INTERVAL '${amount} ${String(unit).toLowerCase()}'`)
+    .replace(/\bLIKE\b/gi, 'ILIKE')
+  let index = 0
+  text = text.replace(/\?/g, () => `$${++index}`)
+  return text
+}
+
+async function run<T = any>(sql: string, params: any[] = []): Promise<[T, any]> {
+  let text = translate(sql)
+  const insert = /^\s*insert\s+into\s+"?(\w+)"?/i.exec(text)
+  const wantsId = Boolean(insert && idTables.has(insert[1].toLowerCase()) && !/\breturning\b/i.test(text))
+  if (wantsId) text = text.replace(/;?\s*$/, '') + ' RETURNING id'
+  const values = params.map((value) => (value === undefined ? null : value))
+  try {
+    const result = await getPool().query({ text, values })
+    if (/^\s*(select|with)\b/i.test(text)) return [result.rows as any, result.fields]
+    return [{ affectedRows: result.rowCount ?? 0, insertId: wantsId ? Number(result.rows[0]?.id ?? 0) : 0 } as any, undefined]
+  } catch (error: any) {
+    if (error?.code === '23505') error.code = 'ER_DUP_ENTRY'
+    throw error
   }
-  return ready
 }
 
 export function isDatabaseUnavailable(error: unknown) {
   const code = typeof (error as any)?.code === 'string' ? (error as any).code : ''
   const message = error instanceof Error ? error.message : String(error ?? '')
-  return [
-    'ECONNREFUSED',
-    'ETIMEDOUT',
-    'ENOTFOUND',
-    'EAI_AGAIN',
-    'ECONNRESET',
-    'PROTOCOL_CONNECTION_LOST',
-    'ER_ACCESS_DENIED_ERROR',
-    'ER_BAD_DB_ERROR'
-  ].includes(code) || /DATABASE_URL|Database initialization failed|getaddrinfo|connect/i.test(message)
+  return (
+    ['ECONNREFUSED', 'ETIMEDOUT', 'ENOTFOUND', 'EAI_AGAIN', 'ECONNRESET', '28P01', '28000', '3D000', '57P03', '08006', '08001'].includes(code) ||
+    /DATABASE_URL|getaddrinfo|connect|timeout|authentication failed|Tenant or user not found/i.test(message)
+  )
 }
 
-export const db = new Proxy({} as mysql.Pool, {
-  get(_, property) {
-    const target = getPool() as any
-    const value = target[property]
-    if (typeof value !== 'function') return value
-    return async (...args: any[]) => {
-      await ensureReady(target)
-      return value.apply(target, args)
-    }
-  }
-})
+export const db = {
+  execute: run,
+  query: run
+}

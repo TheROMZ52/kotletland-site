@@ -32,6 +32,10 @@ export function AuthForm({ mode, notice }: { mode: 'login' | 'register'; notice?
         setMessage({ kind: 'err', text: data.error || 'مشکلی پیش آمد. دوباره امتحان کن.' })
         return
       }
+      if (mode === 'register' && data.needsConfirmation) {
+        setMessage({ kind: 'ok', text: 'اکانت ساخته شد. یه ایمیل تأیید برات فرستادیم؛ لینکش رو بزن و بعد وارد شو. (اگه نیومد، پوشه‌ی اسپم رو هم نگاه کن.)' })
+        return
+      }
       router.push('/account')
       router.refresh()
     } catch {
@@ -54,6 +58,7 @@ export function AuthForm({ mode, notice }: { mode: 'login' | 'register'; notice?
         <button className="btn btn-primary btn-block" disabled={busy} type="submit">{busy ? 'کمی صبر کن…' : isLogin ? 'ورود' : 'ساخت اکانت'}</button>
       </form>
       {message && <div className={`notice notice-${message.kind}`} role={message.kind === 'err' ? 'alert' : 'status'}>{message.text}</div>}
+      {isLogin && <p className="auth-switch">رمزت رو فراموش کردی؟ از <a href="https://nexvordev.ir" target="_blank" rel="noopener noreferrer">سایت اصلی نکسور</a> ریستش کن. حساب‌ها مشترکه.</p>}
       <p className="auth-switch">{isLogin ? <>اکانت نداری؟ <Link href="/register">ثبت‌نام کن</Link></> : <>اکانت داری؟ <Link href="/login">وارد شو</Link></>}</p>
     </div>
   )

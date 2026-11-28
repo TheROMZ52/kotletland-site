@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { randomBytes, scryptSync } from 'node:crypto'
 import { logAdminAction } from '@/lib/audit'
 
 export async function GET(request: Request) {
@@ -73,22 +72,14 @@ export async function PATCH(request: Request) {
     await db.execute('UPDATE profiles SET minecraft_uuid = NULL, minecraft_nickname = NULL WHERE user_id = ?', [id])
     await db.execute('DELETE FROM minecraft_link_codes WHERE user_id = ?', [id])
   }
-  if (forceLogout) await db.execute('DELETE FROM sessions WHERE user_id = ?', [id])
-  let temporaryPassword: string | null = null
-  if (resetPassword) {
-    temporaryPassword = randomBytes(9).toString('base64url')
-    const salt = randomBytes(16).toString('hex')
-    const hash = scryptSync(temporaryPassword, salt, 64).toString('hex')
-    await db.execute('UPDATE users SET password_hash = ? WHERE id = ?', [`scrypt:${salt}:${hash}`, id])
-    await db.execute('DELETE FROM sessions WHERE user_id = ?', [id])
-  }
+  const temporaryPassword: string | null = null
+  if (resetPassword) return NextResponse.json({ error: 'ریست رمز از اینجا ممکن نیست. حساب‌ها مشترک با سایت اصلی هستن؛ کاربر از سایت اصلی «فراموشی رمز» رو بزنه.' }, { status: 400 })
   if (!updates.length && !unlinkMinecraft && !forceLogout && !resetPassword) return NextResponse.json({ error: 'تغییری ارسال نشده است.' }, { status: 400 })
 
   if (updates.length) {
     values.push(id)
     await db.execute(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, values)
   }
-  if (banned === true) await db.execute('DELETE FROM sessions WHERE user_id = ?', [id])
   const actions: string[] = []
   if (role !== undefined && role !== existing[0].role) actions.push(`role: ${existing[0].role} -> ${role}`)
   if (emailVerified !== undefined) actions.push(`email_verified: ${emailVerified}`)

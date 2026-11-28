@@ -26,12 +26,12 @@ export async function POST(request: Request) {
   const tokenHash = createHash('sha256').update(token).digest('hex')
 
   await db.execute(
-    'INSERT INTO minecraft_server_registrations (installation_id, token_hash) VALUES (?, ?) ON DUPLICATE KEY UPDATE token_hash = VALUES(token_hash)',
+    'INSERT INTO minecraft_server_registrations (installation_id, token_hash) VALUES (?, ?) ON CONFLICT (installation_id) DO UPDATE SET token_hash = EXCLUDED.token_hash',
     [installationId, tokenHash]
   )
 
   await db.execute(
-    'INSERT INTO minecraft_servers (server_id, name, installation_id) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name), installation_id = VALUES(installation_id)',
+    'INSERT INTO minecraft_servers (server_id, name, installation_id) VALUES (?, ?, ?) ON CONFLICT (server_id) DO UPDATE SET name = EXCLUDED.name, installation_id = EXCLUDED.installation_id',
     [serverId, serverName, installationId]
   )
 
