@@ -52,7 +52,7 @@ export default async function Home() {
           <div className="hero-art" aria-hidden="true">
             <span className="hero-ring" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" width={420} height={420} alt="" fetchPriority="high" />
+            <img src="/logo.webp" width={420} height={420} alt="" fetchPriority="high" />
           </div>
         </div>
       </section>

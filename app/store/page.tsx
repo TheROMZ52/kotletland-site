@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { RankEmblem } from '@/components/rank-emblem'
 import { PageHeader } from '@/components/page-header'
 import { getStoreProducts } from '@/lib/store'
 import { formatNumber } from '@/lib/format'
@@ -63,7 +64,8 @@ export default async function StorePage() {
               style={{ '--rank-grad': `linear-gradient(90deg, ${(rankStyle[item.name]?.colors ?? ['#B9A9F2', '#8F7BE0']).join(', ')})`, '--rank-color': (rankStyle[item.name]?.colors ?? ['#B9A9F2'])[Math.floor(((rankStyle[item.name]?.colors.length ?? 1) - 1) / 2)] } as React.CSSProperties}
             >
               {item.popular && <span className="tier-flag">پیشنهادی</span>}
-              <h2>{rankStyle[item.name] && <span className="rank-icon" aria-hidden="true">{rankStyle[item.name].icon}</span>} {item.name}</h2>
+              <RankEmblem name={item.name} />
+              <h2>{item.name}</h2>
               <p>{item.description}</p>
               <p className="tier-price">
                 {item.price > 0 ? (

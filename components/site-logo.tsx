@@ -1,6 +1,6 @@
 export function SiteMark({ size = 40 }: { size?: number }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img className="brand-mark" src="/logo.png" width={size} height={size} alt="" decoding="async" />
+  return <img className="brand-mark" src="/logo-96.webp" width={size} height={size} alt="" decoding="async" />
 }
 
 export function SiteLogo() {
