@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const address = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'mc.nexvordev.ir'
+const address = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'sv.nexvordev.ir'
 
 export async function GET() {
   const headers = { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60' }

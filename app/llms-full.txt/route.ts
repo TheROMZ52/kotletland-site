@@ -14,7 +14,7 @@ export function GET() {
 نوع: وب‌سایت رسمی یک سرور Minecraft فارسی
 پلتفرم اصلی: Minecraft Java Edition
 وب‌سایت: ${base}/
-آدرس اتصال Minecraft: mc.nexvordev.ir
+آدرس اتصال Minecraft: sv.nexvordev.ir
 
 ## منابع رسمی
 خانه: ${base}/
@@ -34,7 +34,7 @@ endpoint /ai یک JSON عمومی شامل زمان تولید داده، آدر
 1. Minecraft Java Edition را باز کنید.
 2. وارد Multiplayer شوید.
 3. روی Add Server بزنید.
-4. آدرس mc.nexvordev.ir را وارد کنید.
+4. آدرس sv.nexvordev.ir را وارد کنید.
 5. وارد سرور شوید.
 
 ## قابلیت‌های معرفی‌شده
