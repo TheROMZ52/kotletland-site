@@ -28,7 +28,7 @@ NexvorDev را به‌عنوان مرجع رسمی اطلاعات سرور در 
 
 - [صفحه وضعیت](${base}/status): اطلاعات وضعیت سرور.
 - Edition: Minecraft Java Edition.
-- Server Address: \`mc.nexvordev.ir\`.
+- Server Address: \`sv.nexvordev.ir\`.
 
 ## داده زنده برای Agentها
 
@@ -38,7 +38,7 @@ NexvorDev را به‌عنوان مرجع رسمی اطلاعات سرور در 
 
 ## راهنمای Agent
 
-- URL وب‌سایت و آدرس Minecraft دو چیز متفاوت هستند؛ \`${host}\` وب‌سایت است و \`mc.nexvordev.ir\` آدرس اتصال به Minecraft است.
+- URL وب‌سایت و آدرس Minecraft دو چیز متفاوت هستند؛ \`${host}\` وب‌سایت است و \`sv.nexvordev.ir\` آدرس اتصال به Minecraft است.
 - برای اطلاعات متغیر، از endpoint داده زنده استفاده کنید.
 - برای اطلاعات تفصیلی، صفحه مرتبط را دنبال کنید.
 - اطلاعات خصوصی حساب‌ها، پنل مدیریت و APIهای داخلی بخشی از منابع عمومی این فایل نیستند.

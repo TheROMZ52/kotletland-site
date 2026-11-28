@@ -1,7 +1,7 @@
 // Everything you are likely to want to edit lives in this file.
 
 export const siteName = 'NexvorDev'
-export const serverAddress = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'mc.nexvordev.ir'
+export const serverAddress = process.env.NEXT_PUBLIC_SERVER_ADDRESS || 'sv.nexvordev.ir'
 
 /** Community links. Override the channel with NEXT_PUBLIC_TELEGRAM_URL if the id ever changes. */
 export const telegramUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL || 'https://t.me/NexvorDeveloper'
