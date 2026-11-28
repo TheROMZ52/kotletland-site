@@ -35,7 +35,7 @@ export function StatusProvider({ children }: { children: React.ReactNode }) {
     }
 
     load()
-    const timer = window.setInterval(load, REFRESH_MS)
+    const timer = window.setInterval(() => { if (!document.hidden) load() }, REFRESH_MS)
     const onVisible = () => { if (!document.hidden) load() }
     document.addEventListener('visibilitychange', onVisible)
     return () => {
